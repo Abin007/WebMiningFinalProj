@@ -1,3 +1,4 @@
+from typing import Text
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,70 +8,87 @@ import time
 import csv
 import os
 
+j = 1
 
-def getJobsSoftwareEngineer(location):
+
+def getJobsSoftwareEngineer(job, location):
+    global j
     driver = webdriver.Chrome("./chromedriver")
-    location = location.split(" ")
-    location = ("+").join(location)
+    driver.maximize_window()
+    locationsplit = location.split(" ")
+    location = ("+").join(locationsplit)
+    jobsplit = job.split(" ")
+    jobConcat = ("+").join(jobsplit)
     folder = os.path.join(os.getcwd(), "htmlZip")
     try:
         os.makedirs(folder)
     except:
         print("file already exists")
-    fw = open("reviews.csv", "w", encoding="utf8")
+    fw = open("reviews.csv", "a+", encoding="utf8")
     writer = csv.writer(fw, lineterminator="\n")
-    driver.get(f"https://www.indeed.com/jobs?q=Data+Scientist&l={location}&radius=100")
+    driver.get(f"https://www.indeed.com/jobs?q={jobConcat}&l={location}&radius=100")
     time.sleep(2)
     nextlink = True
-    j = 0
+
     done = False
     while nextlink:
         try:
-            time.sleep(2)
-            driver.find_element_by_id("popover-x").click()
+            time.sleep(4)
+            popButton = driver.find_element_by_id("popover-foreground")
+            popButton.find_element_by_id("popover-x").click()
         except:
             print("No Button")
 
         jobs = driver.find_elements_by_css_selector(
             "div.jobsearch-SerpJobCard.unifiedRow.row.result.clickcard"
         )
+        print(f"Number of jobs attained {len(jobs)}")
         for i in range(len(jobs)):
             jobDesc = "N/A"
             html = "N/A"
             jobs[i].click()
             time.sleep(2)
-            iframe = driver.find_element_by_xpath(
-                "//iframe[@id='vjs-container-iframe']"
-            )
-            driver.switch_to.frame(iframe)
-            time.sleep(2)
             try:
-                html = driver.execute_script(
-                    "return document.documentElement.outerHTML;"
-                )
-                jobDesc = driver.find_elements_by_css_selector(
-                    "div.jobsearch-jobDescriptionText"
-                )[0].text
-                jobDesc = jobDesc.replace("\n", " ")
-            except:
-                print("no Text")
-            if jobDesc != "N/A" and j <= 5000:
-                writer.writerow([jobDesc, "Data Scientist"])
-            else:
-                done = True
-                break
 
-            if html != "N/A" and j <= 5000:
-                script_dir = os.path.dirname(
-                    __file__
-                )  # <-- absolute dir the script is in
-                rel_path = f"htmlZip/htmlAD{j}.html"
+                iframe = driver.find_element_by_xpath(
+                    "//iframe[@id='vjs-container-iframe']"
+                )
+                driver.switch_to.frame(iframe)
+                try:
+                    jobDesc = driver.find_elements_by_css_selector(
+                        "div.jobsearch-JobComponent.jobsearch-JobComponent--embedded.icl-u-xs-mt--sm "
+                    )[0].text
+                    jobDesc = jobDesc.replace("\n", " ")
+                except:
+                    print("no Job Desc")
+
+                try:
+                    html = driver.execute_script(
+                        "return document.documentElement.outerHTML;"
+                    )
+                except:
+                    print("No Html")
+            except:
+                print("iFrame doesn't exist")
+            time.sleep(2)
+
+            if jobDesc != "N/A" and html != "N/A":
+                writer.writerow([jobDesc, job])
+                script_dir = os.path.dirname(__file__)
+                locname = "_".join(locationsplit)
+                jobname = ""
+                for i in jobsplit:
+                    jobname += i[0]
+                rel_path = f"htmlZip/{jobname}_{locname}_{j}.html"
                 abs_file_path = os.path.join(script_dir, rel_path)
-                ad1 = open(abs_file_path, "w", encoding="utf8")
+                ad1 = open(abs_file_path, "w+", encoding="utf8")
                 j += 1
                 ad1.writelines(html)
                 ad1.close()
+
             driver.switch_to.default_content()
+            time.sleep(2)
+
         try:
             driver.find_element_by_xpath("//a[@aria-label='Next']").click()
             time.sleep(2)
@@ -83,4 +101,15 @@ def getJobsSoftwareEngineer(location):
     fw.close()
 
 
-getJobsSoftwareEngineer("San Diego, CA")
+getJobsSoftwareEngineer("Data Scientist", "Bridgewater, New Jersey")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Omaha, Nebraska")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Oklahoma City, Oklahoma")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "San Diego, California")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Salt Lake City, UT")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Kansas City, KS")
+print(j)
