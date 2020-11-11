@@ -29,7 +29,7 @@ def getJobsSoftwareEngineer(job, location):
     driver.get(f"https://www.indeed.com/jobs?q={jobConcat}&l={location}")
     time.sleep(2)
     nextlink = True
-
+    jobs=[]
     done = False
     noofJobs = 0
     while nextlink:
@@ -39,10 +39,12 @@ def getJobsSoftwareEngineer(job, location):
             popButton.find_element_by_id("popover-x").click()
         except:
             print("No Button")
-
-        jobs = driver.find_elements_by_css_selector(
+        try:
+            jobs = driver.find_elements_by_css_selector(
             "div.jobsearch-SerpJobCard.unifiedRow.row.result.clickcard"
-        )
+            )
+        except:
+            print("No jobs found")
         noofJobs += len(jobs)
         print(f"Number of jobs added {noofJobs}")
         if len(jobs) > 0:
@@ -102,15 +104,41 @@ def getJobsSoftwareEngineer(job, location):
     fw.close()
 
 
+getJobsSoftwareEngineer("Data Scientist", "San Diego, CA")
+print(j)
 getJobsSoftwareEngineer("Data Scientist", "Bridgewater, New Jersey")
 print(j)
 getJobsSoftwareEngineer("Data Scientist", "Omaha, Nebraska")
 print(j)
 getJobsSoftwareEngineer("Data Scientist", "Oklahoma City, Oklahoma")
 print(j)
-getJobsSoftwareEngineer("Data Scientist", "San Diego, California")
+getJobsSoftwareEngineer("Data Scientist", "Euless ,TX")
 print(j)
-getJobsSoftwareEngineer("Data Scientist", "Salt Lake City, UT")
+getJobsSoftwareEngineer("Data Scientist", "Ambler, PA")
 print(j)
-getJobsSoftwareEngineer("Data Scientist", "Kansas City, KS")
+getJobsSoftwareEngineer("Data Scientist", "Irving, TX")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Irvine, CA")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Bedford, TX")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Santa Clarita, CA")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Balch Springs, TX")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Grapevine , TX")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Plano, TX")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Fort Worth, TX")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "San Antonio, TX")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Sacramento, CA")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Oregon City, OR")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Greenbelt, MD")
+print(j)
+getJobsSoftwareEngineer("Data Scientist", "Grand Prairie, TX")
 print(j)
