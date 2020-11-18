@@ -29,7 +29,7 @@ def getJobsSoftwareEngineer(job, location):
     driver.get(f"https://www.indeed.com/jobs?q={jobConcat}&l={location}")
     time.sleep(2)
     nextlink = True
-    jobs=[]
+    jobs = []
     done = False
     noofJobs = 0
     while nextlink:
@@ -41,18 +41,21 @@ def getJobsSoftwareEngineer(job, location):
             print("No Button")
         try:
             jobs = driver.find_elements_by_css_selector(
-            "div.jobsearch-SerpJobCard.unifiedRow.row.result.clickcard"
+                "div.jobsearch-SerpJobCard.unifiedRow.row.result.clickcard"
             )
         except:
             print("No jobs found")
         noofJobs += len(jobs)
         print(f"Number of jobs added {noofJobs}")
+        already_seen=set()
         if len(jobs) > 0:
             for i in range(len(jobs)):
+                if jobs[i] in already_seen:continue
+                already_seen.add(jobs[i])
                 jobDesc = "N/A"
                 html = "N/A"
                 jobs[i].click()
-                time.sleep(2)
+                time.sleep(4)
                 try:
 
                     iframe = driver.find_element_by_xpath(
@@ -75,7 +78,7 @@ def getJobsSoftwareEngineer(job, location):
                         print("No Html")
                 except:
                     print("iFrame doesn't exist")
-                time.sleep(2)
+                time.sleep(4)
 
                 if jobDesc != "N/A" and html != "N/A":
                     writer.writerow([jobDesc, job])
@@ -92,11 +95,11 @@ def getJobsSoftwareEngineer(job, location):
                     ad1.close()
 
                 driver.switch_to.default_content()
-                time.sleep(2)
+                time.sleep(60)
 
         try:
             driver.find_element_by_xpath("//a[@aria-label='Next']").click()
-            time.sleep(2)
+            time.sleep(300)
         except:
             print("No Next")
             nextlink = False
@@ -104,41 +107,7 @@ def getJobsSoftwareEngineer(job, location):
     fw.close()
 
 
-getJobsSoftwareEngineer("Data Scientist", "San Diego, CA")
+getJobsSoftwareEngineer("Software Engineer", "Balch Springs, TX")
 print(j)
-getJobsSoftwareEngineer("Data Scientist", "Bridgewater, New Jersey")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Omaha, Nebraska")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Oklahoma City, Oklahoma")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Euless ,TX")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Ambler, PA")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Irving, TX")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Irvine, CA")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Bedford, TX")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Santa Clarita, CA")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Balch Springs, TX")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Grapevine , TX")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Plano, TX")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Fort Worth, TX")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "San Antonio, TX")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Sacramento, CA")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Oregon City, OR")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Greenbelt, MD")
-print(j)
-getJobsSoftwareEngineer("Data Scientist", "Grand Prairie, TX")
+getJobsSoftwareEngineer("Software Engineer", "Plano, TX")
 print(j)
