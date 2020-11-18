@@ -61,7 +61,7 @@ def getJobsSoftwareEngineer(job, location):
                     driver.switch_to.frame(iframe)
                     try:
                         jobDesc = driver.find_elements_by_css_selector(
-                            "div.jobsearch-JobComponent.jobsearch-JobComponent--embedded.icl-u-xs-mt--sm "
+                            "div.jobsearch-JobComponent.jobsearch-JobComponent--embedded.icl-u-xs-mt--sm"
                         )[0].text
                         jobDesc = jobDesc.replace("\n", " ")
                     except:
