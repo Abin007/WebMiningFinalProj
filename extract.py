@@ -26,12 +26,13 @@ def getJobsSoftwareEngineer(job, location):
         print("file already exists")
     fw = open("reviews.csv", "a+", encoding="utf8")
     writer = csv.writer(fw, lineterminator="\n")
-    driver.get(f"https://www.indeed.com/jobs?q={jobConcat}&l={location}")
+    (f"https://www.indeed.com/jobs?q={jobConcat}&l={location}")
     time.sleep(2)
     nextlink = True
     jobs = []
     done = False
     noofJobs = 0
+    prevjobDesc=""
     while nextlink:
         try:
             time.sleep(4)
@@ -64,7 +65,7 @@ def getJobsSoftwareEngineer(job, location):
                     driver.switch_to.frame(iframe)
                     try:
                         jobDesc = driver.find_elements_by_css_selector(
-                            "div.jobsearch-JobComponent.jobsearch-JobComponent--embedded.icl-u-xs-mt--sm"
+                            "div.jobsearch-ViewJobLayout.jobsearch-ViewJobLayout--embedded"
                         )[0].text
                         jobDesc = jobDesc.replace("\n", " ")
                     except:
@@ -80,7 +81,11 @@ def getJobsSoftwareEngineer(job, location):
                     print("iFrame doesn't exist")
                 time.sleep(4)
 
+                if prevjobDesc==jobDesc:
+                    continue
+
                 if jobDesc != "N/A" and html != "N/A":
+                    prevjobDesc=jobDesc
                     writer.writerow([jobDesc, job])
                     script_dir = os.path.dirname(__file__)
                     locname = "_".join(locationsplit)
@@ -95,11 +100,11 @@ def getJobsSoftwareEngineer(job, location):
                     ad1.close()
 
                 driver.switch_to.default_content()
-                time.sleep(60)
+                time.sleep(30)
 
         try:
             driver.find_element_by_xpath("//a[@aria-label='Next']").click()
-            time.sleep(300)
+            time.sleep(150)
         except:
             print("No Next")
             nextlink = False
