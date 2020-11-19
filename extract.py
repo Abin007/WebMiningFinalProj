@@ -26,7 +26,7 @@ def getJobsSoftwareEngineer(job, location):
         print("file already exists")
     fw = open("reviews.csv", "a+", encoding="utf8")
     writer = csv.writer(fw, lineterminator="\n")
-    (f"https://www.indeed.com/jobs?q={jobConcat}&l={location}")
+    driver.get(f"https://www.indeed.com/jobs?q={jobConcat}&l={location}")
     time.sleep(2)
     nextlink = True
     jobs = []
