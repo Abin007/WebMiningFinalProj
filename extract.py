@@ -55,49 +55,55 @@ def getJobsSoftwareEngineer(job, location):
                 already_seen.add(jobs[i])
                 jobDesc = "N/A"
                 html = "N/A"
-                jobs[i].click()
-                time.sleep(4)
                 try:
-
-                    iframe = driver.find_element_by_xpath(
-                        "//iframe[@id='vjs-container-iframe']"
-                    )
-                    driver.switch_to.frame(iframe)
+                    jobs[i].click()
+                    time.sleep(4)
+                    if len(driver.window_handles) > 1:
+                        driver.switch_to.window(driver.window_handles[0])
+                        time.sleep(4)
                     try:
-                        jobDesc = driver.find_elements_by_css_selector(
-                            "div.jobsearch-ViewJobLayout.jobsearch-ViewJobLayout--embedded"
-                        )[0].text
-                        jobDesc = jobDesc.replace("\n", " ")
-                    except:
-                        print("no Job Desc")
 
-                    try:
-                        html = driver.execute_script(
-                            "return document.documentElement.outerHTML;"
+                        iframe = driver.find_element_by_xpath(
+                            "//iframe[@id='vjs-container-iframe']"
                         )
+                        driver.switch_to.frame(iframe)
+                        try:
+                            jobDesc = driver.find_elements_by_css_selector(
+                                "div.jobsearch-ViewJobLayout.jobsearch-ViewJobLayout--embedded"
+                            )[0].text
+                            jobDesc = jobDesc.replace("\n", " ")
+                        except:
+                            print("no Job Desc")
+
+                        try:
+                            html = driver.execute_script(
+                                "return document.documentElement.outerHTML;"
+                            )
+                        except:
+                            print("No Html")
                     except:
-                        print("No Html")
+                        print("iFrame doesn't exist")
+                    time.sleep(4)
+
+                    if prevjobDesc==jobDesc:
+                        continue
+
+                    if jobDesc != "N/A" and html != "N/A":
+                        prevjobDesc=jobDesc
+                        writer.writerow([jobDesc, job])
+                        script_dir = os.path.dirname(__file__)
+                        locname = "_".join(locationsplit)
+                        jobname = ""
+                        for i in jobsplit:
+                            jobname += i[0]
+                        rel_path = f"htmlZip/{jobname}_{locname}_{j}.html"
+                        abs_file_path = os.path.join(script_dir, rel_path)
+                        ad1 = open(abs_file_path, "w+", encoding="utf8")
+                        j += 1
+                        ad1.writelines(html)
+                        ad1.close()
                 except:
-                    print("iFrame doesn't exist")
-                time.sleep(4)
-
-                if prevjobDesc==jobDesc:
-                    continue
-
-                if jobDesc != "N/A" and html != "N/A":
-                    prevjobDesc=jobDesc
-                    writer.writerow([jobDesc, job])
-                    script_dir = os.path.dirname(__file__)
-                    locname = "_".join(locationsplit)
-                    jobname = ""
-                    for i in jobsplit:
-                        jobname += i[0]
-                    rel_path = f"htmlZip/{jobname}_{locname}_{j}.html"
-                    abs_file_path = os.path.join(script_dir, rel_path)
-                    ad1 = open(abs_file_path, "w+", encoding="utf8")
-                    j += 1
-                    ad1.writelines(html)
-                    ad1.close()
+                    print("No Clickable Job AD")
 
                 driver.switch_to.default_content()
                 time.sleep(30)
@@ -112,7 +118,6 @@ def getJobsSoftwareEngineer(job, location):
     fw.close()
 
 
-getJobsSoftwareEngineer("Software Engineer", "Balch Springs, TX")
-print(j)
-getJobsSoftwareEngineer("Software Engineer", "Plano, TX")
+
+getJobsSoftwareEngineer("Data Scientist", "Maryland City, MD")
 print(j)
