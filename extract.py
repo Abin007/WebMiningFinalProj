@@ -24,8 +24,8 @@ def getJobsSoftwareEngineer(job, location):
         os.makedirs(folder)
     except:
         print("file already exists")
-    fw = open("reviews.csv", "a+", encoding="utf8")
-    writer = csv.writer(fw, lineterminator="\n")
+    # fw = open("reviews.csv", "a+", encoding="utf8")
+    # writer = csv.writer(fw, lineterminator="\n")
     driver.get(f"https://www.indeed.com/jobs?q={jobConcat}&l={location}")
     time.sleep(2)
     nextlink = True
@@ -90,7 +90,7 @@ def getJobsSoftwareEngineer(job, location):
 
                     if jobDesc != "N/A" and html != "N/A":
                         prevjobDesc=jobDesc
-                        writer.writerow([jobDesc, job])
+                        # writer.writerow([jobDesc, job])
                         script_dir = os.path.dirname(__file__)
                         locname = "_".join(locationsplit)
                         jobname = ""
@@ -115,7 +115,7 @@ def getJobsSoftwareEngineer(job, location):
             print("No Next")
             nextlink = False
 
-    fw.close()
+    # fw.close()
 
 
 
