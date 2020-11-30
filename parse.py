@@ -24,20 +24,21 @@ def tag_visible(element):
 
 def runHTMLfiles(path):
     list_of_files = glob.glob(path)
+    fw = open("jobs.csv", "w", encoding="utf8")
     for fileName in list_of_files:
         print(fileName[10:12])
         if fileName[10:12] == "DS":
-            run(fileName, "Data Scientist")
+            run(fileName, "Data Scientist", fw)
         elif fileName[10:12] == "SE":
-            run(fileName, "Software Engineer")
+            run(fileName, "Software Engineer", fw)
         elif fileName[10:12] == "DE":
-            run(fileName, "Data Engineer")
+            run(fileName, "Data Engineer", fw)
+    fw.close()
 
 
-def run(htmlpage, jobName):
+def run(htmlpage, jobName, fw):
     with open(htmlpage, "r") as file:
         data = file.read()
-    fw = open("jobs.csv", "a+", encoding="utf8")
     writer = csv.writer(fw, lineterminator="\n")
     soup = BeautifulSoup(data, "html5lib")
     jobAD = soup.findAll(text=True)
