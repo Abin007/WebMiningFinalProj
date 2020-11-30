@@ -32,7 +32,7 @@ def getJobsSoftwareEngineer(job, location):
     jobs = []
     done = False
     noofJobs = 0
-    prevjobDesc=""
+    prevjobDesc = ""
     while nextlink:
         try:
             time.sleep(4)
@@ -48,10 +48,11 @@ def getJobsSoftwareEngineer(job, location):
             print("No jobs found")
         noofJobs += len(jobs)
         print(f"Number of jobs added {noofJobs}")
-        already_seen=set()
+        already_seen = set()
         if len(jobs) > 0:
             for i in range(len(jobs)):
-                if jobs[i] in already_seen:continue
+                if jobs[i] in already_seen:
+                    continue
                 already_seen.add(jobs[i])
                 jobDesc = "N/A"
                 html = "N/A"
@@ -85,11 +86,11 @@ def getJobsSoftwareEngineer(job, location):
                         print("iFrame doesn't exist")
                     time.sleep(4)
 
-                    if prevjobDesc==jobDesc:
+                    if prevjobDesc == jobDesc:
                         continue
 
                     if jobDesc != "N/A" and html != "N/A":
-                        prevjobDesc=jobDesc
+                        prevjobDesc = jobDesc
                         # writer.writerow([jobDesc, job])
                         script_dir = os.path.dirname(__file__)
                         locname = "_".join(locationsplit)
@@ -116,7 +117,6 @@ def getJobsSoftwareEngineer(job, location):
             nextlink = False
 
     # fw.close()
-
 
 
 getJobsSoftwareEngineer("Data Scientist", "Maryland City, MD")

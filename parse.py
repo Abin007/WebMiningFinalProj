@@ -44,9 +44,17 @@ def run(htmlpage, jobName):
     HtmlText = ""
     visible_texts = filter(tag_visible, jobAD)
     HtmlText = u" ".join(t.strip() for t in visible_texts)
+    HtmlText = HtmlText.lower()
     HtmlText = HtmlText.replace("\n", " ")
     HtmlText = HtmlText.replace(",", " ")
-    HtmlText = HtmlText.replace(jobName, " ")
+
+    if jobName == "Data Scientist":
+        HtmlText = re.sub("data sci[a-z]+", " ", HtmlText, re.I)
+    if jobName == "Data Engineer":
+        HtmlText = re.sub("data eng[a-z]+", " ", HtmlText, re.I)
+    if jobName == "Software Engineer":
+        HtmlText = re.sub("software eng[a-z]+", " ", HtmlText, re.I)
+
     writer.writerow([HtmlText, jobName])
 
 
