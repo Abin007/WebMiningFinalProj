@@ -11,7 +11,7 @@ import os
 j = 1
 
 
-def getJobsSoftwareEngineer(job, location):
+def getJobsAds(job, location):
     global j
     driver = webdriver.Chrome("./chromedriver")
     driver.maximize_window()
@@ -119,5 +119,5 @@ def getJobsSoftwareEngineer(job, location):
     # fw.close()
 
 
-getJobsSoftwareEngineer("Data Scientist", "Maryland City, MD")
+getJobsAds("Data Scientist", "Maryland City, MD")
 print(j)
