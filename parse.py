@@ -25,8 +25,10 @@ def tag_visible(element):
 def runHTMLfiles(path):
     list_of_files = glob.glob(path)
     fw = open("jobs.csv", "w", encoding="utf8")
+    j = 1
     for fileName in list_of_files:
-        print(fileName[10:12])
+        print(fileName, j)
+        j = j + 1
         if fileName[10:12] == "DS":
             run(fileName, "Data Scientist", fw)
         elif fileName[10:12] == "SE":
@@ -46,15 +48,18 @@ def run(htmlpage, jobName, fw):
     visible_texts = filter(tag_visible, jobAD)
     HtmlText = u" ".join(t.strip() for t in visible_texts)
     HtmlText = HtmlText.lower()
-    HtmlText = HtmlText.replace("\n", " ")
-    HtmlText = HtmlText.replace(",", " ")
-
     if jobName == "Data Scientist":
         HtmlText = re.sub("data sci[a-z]+", " ", HtmlText, re.I)
+        HtmlText = HtmlText.replace("data scientist", " ")
     if jobName == "Data Engineer":
         HtmlText = re.sub("data eng[a-z]+", " ", HtmlText, re.I)
+        HtmlText = HtmlText.replace("data engineer", " ")
     if jobName == "Software Engineer":
         HtmlText = re.sub("software eng[a-z]+", " ", HtmlText, re.I)
+        HtmlText = HtmlText.replace("software engineer", " ")
+    HtmlText = HtmlText.replace("\n", " ")
+    HtmlText = HtmlText.replace(",", " ")
+    HtmlText = HtmlText.strip()
 
     writer.writerow([HtmlText, jobName])
 
