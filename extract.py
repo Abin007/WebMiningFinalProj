@@ -39,7 +39,7 @@ def getJobsAds(job, location):
             popButton = driver.find_element_by_id("popover-foreground")
             popButton.find_element_by_id("popover-x").click()
         except:
-            print("No Button")
+            print("No pop button")
         try:
             jobs = driver.find_elements_by_css_selector(
                 "div.jobsearch-SerpJobCard.unifiedRow.row.result.clickcard"
